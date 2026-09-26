@@ -1,0 +1,1 @@
+import{LocaleUi}from"@/components/LocaleUi";export default async function LocaleLayout({children,params}:{children:React.ReactNode;params:Promise<{locale:string}>}){const{locale}=await params;return <div lang={locale} dir={locale==="ar"||locale==="he"?"rtl":"ltr"}><LocaleUi locale={locale}/>{children}</div>}

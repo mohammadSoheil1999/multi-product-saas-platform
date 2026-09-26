@@ -1,0 +1,2 @@
+import { paymentProvider,processPaymentEvent } from "@/lib/payments";
+export async function POST(request:Request){const raw=await request.text();try{const event=await paymentProvider().verifyWebhook(raw,request.headers.get("x-provider-signature")||"");await processPaymentEvent(process.env.PAYMENT_PROVIDER||"mock",event);return Response.json({received:true})}catch{return Response.json({error:"Webhook rejected"},{status:400})}}

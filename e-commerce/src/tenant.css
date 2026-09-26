@@ -1,0 +1,15 @@
+body.tenant-store .logo,
+body.tenant-store .checkoutLogo {
+  font-size: 0;
+  letter-spacing: normal;
+}
+body.tenant-store .logo span,
+body.tenant-store .checkoutLogo span { display: none; }
+body.tenant-store .logo::after,
+body.tenant-store .checkoutLogo::after {
+  content: attr(data-store-name);
+  font-family: Manrope, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}

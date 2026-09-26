@@ -1,0 +1,2 @@
+import {requireCourier} from "@/features/auth/authorization";import {acceptFixedDelivery} from "@/server/services/delivery-service";import {failure,ok} from "@/lib/http";import {idSchema} from "@/features/deliveries/schemas";
+export async function POST(_:Request,{params}:{params:Promise<{id:string}>}){try{const actor=await requireCourier();const {id}=await params;return ok(await acceptFixedDelivery(actor,idSchema.parse(id)));}catch(e){return failure(e)}}

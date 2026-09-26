@@ -1,0 +1,431 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  CLIENT
+  ADMIN
+}
+enum AccountStatus {
+  ACTIVE
+  SUSPENDED
+  CLOSED
+}
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+enum BillingInterval {
+  MONTHLY
+  YEARLY
+}
+enum SubscriptionStatus {
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+  EXPIRED
+  SUSPENDED
+}
+enum ProvisioningStatus {
+  PURCHASED
+  SETUP_REQUIRED
+  PROVISIONING
+  ACTIVE
+  SUSPENDED
+}
+enum DomainStatus {
+  NOT_CONFIGURED
+  PENDING
+  VERIFYING
+  ACTIVE
+  FAILED
+}
+enum RequestStatus {
+  SUBMITTED
+  REVIEWING
+  APPROVED
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
+}
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_FOR_CLIENT
+  RESOLVED
+  CLOSED
+}
+enum TicketCategory {
+  TECHNICAL
+  BILLING
+  CUSTOMIZATION
+  DOMAIN
+  FEATURE_REQUEST
+  OTHER
+}
+enum LeadType {
+  CONTACT
+  DEMO
+  CUSTOM_DEVELOPMENT
+}
+enum InvoiceStatus {
+  DRAFT
+  OPEN
+  PAID
+  VOID
+  UNCOLLECTIBLE
+  REFUNDED
+}
+
+model User {
+  id String @id @default(cuid())
+  name String
+  email String @unique
+  emailVerified Boolean @default(false)
+  image String?
+  role Role @default(CLIENT)
+  status AccountStatus @default(ACTIVE)
+  preferredLanguage String @default("en")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  accounts Account[]
+  sessions Session[]
+  businessProfile BusinessProfile?
+  subscriptions Subscription[]
+  entitlements Entitlement[]
+  onboardings ClientOnboarding[]
+  requests CustomizationRequest[]
+  tickets SupportTicket[]
+  supportMessages SupportMessage[]
+  notifications Notification[]
+  terms TermsAcceptance[]
+  auditLogs AuditLog[] @relation("AuditActor")
+}
+
+model Account {
+  id String @id @default(cuid())
+  accountId String
+  providerId String
+  userId String
+  password String?
+  accessToken String?
+  refreshToken String?
+  idToken String?
+  accessTokenExpiresAt DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+  @@unique([providerId, accountId])
+  @@index([userId])
+}
+
+model Session {
+  id String @id @default(cuid())
+  expiresAt DateTime
+  token String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId String
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+  @@index([userId])
+}
+
+model Verification {
+  id String @id @default(cuid())
+  identifier String
+  value String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([identifier])
+}
+
+model BusinessProfile {
+  id String @id @default(cuid())
+  userId String @unique
+  businessName String
+  phone String?
+  country String?
+  vatNumber String?
+  address String?
+  website String?
+  internalNotes String?
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+}
+
+model Product {
+  id String @id @default(cuid())
+  name String
+  slug String @unique
+  shortDescription String
+  description String
+  icon String?
+  coverImage String?
+  productionUrl String?
+  screenshots Json @default("[]")
+  status ProductStatus @default(DRAFT)
+  featured Boolean @default(false)
+  displayOrder Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  plans ProductPlan[]
+  subscriptions Subscription[]
+  entitlements Entitlement[]
+  demos DemoConfiguration[]
+  onboardings ClientOnboarding[]
+  requests CustomizationRequest[]
+  tickets SupportTicket[]
+}
+
+model ProductPlan {
+  id String @id @default(cuid())
+  productId String
+  name String
+  slug String
+  monthlyPrice Int
+  annualPrice Int
+  currency String @default("ILS")
+  features Json
+  limits Json @default("{}")
+  maxUsers Int?
+  maxLocations Int?
+  trialDays Int @default(0)
+  active Boolean @default(true)
+  displayOrder Int @default(0)
+  product Product @relation(fields:[productId], references:[id], onDelete:Cascade)
+  subscriptions Subscription[]
+  @@unique([productId, slug])
+}
+
+model Subscription {
+  id String @id @default(cuid())
+  userId String
+  productId String
+  planId String
+  provider String
+  providerCustomerId String?
+  providerSubscriptionId String? @unique
+  billingInterval BillingInterval
+  status SubscriptionStatus @default(TRIALING)
+  provisioningStatus ProvisioningStatus @default(SETUP_REQUIRED)
+  currentPeriodStart DateTime?
+  currentPeriodEnd DateTime?
+  cancelAtPeriodEnd Boolean @default(false)
+  requestedDomain String?
+  customDomain String?
+  domainStatus DomainStatus @default(NOT_CONFIGURED)
+  internalNotes String?
+  externalTenantId String? @unique
+  externalAccessUrl String?
+  provisionedAt DateTime?
+  provisioningError String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields:[userId], references:[id], onDelete:Restrict)
+  product Product @relation(fields:[productId], references:[id], onDelete:Restrict)
+  plan ProductPlan @relation(fields:[planId], references:[id], onDelete:Restrict)
+  entitlements Entitlement[]
+  invoices InvoiceRecord[]
+  onboarding ClientOnboarding?
+  requests CustomizationRequest[]
+  @@index([userId,status])
+  @@index([productId,status])
+}
+
+model Entitlement {
+  id String @id @default(cuid())
+  userId String
+  productId String
+  subscriptionId String?
+  key String @default("product_access")
+  active Boolean @default(true)
+  startsAt DateTime @default(now())
+  endsAt DateTime?
+  source String @default("subscription")
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+  product Product @relation(fields:[productId], references:[id], onDelete:Cascade)
+  subscription Subscription? @relation(fields:[subscriptionId], references:[id], onDelete:SetNull)
+  @@unique([userId,productId,key])
+}
+
+model InvoiceRecord {
+  id String @id @default(cuid())
+  subscriptionId String
+  providerInvoiceId String @unique
+  amountDue Int
+  amountPaid Int @default(0)
+  currency String
+  status InvoiceStatus
+  invoiceUrl String?
+  dueAt DateTime?
+  paidAt DateTime?
+  createdAt DateTime @default(now())
+  subscription Subscription @relation(fields:[subscriptionId], references:[id], onDelete:Cascade)
+}
+model PaymentEvent {
+  id String @id @default(cuid())
+  provider String
+  providerEventId String @unique
+  type String
+  payload Json
+  processedAt DateTime?
+  error String?
+  createdAt DateTime @default(now())
+}
+
+model ClientOnboarding {
+  id String @id @default(cuid())
+  userId String
+  productId String
+  subscriptionId String @unique
+  businessName String
+  logoUrl String?
+  primaryColor String?
+  secondaryColor String?
+  businessType String?
+  preferredDomain String?
+  languages Json @default("[]")
+  contactInformation Json @default("{}")
+  requiredCustomizations String?
+  completedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+  product Product @relation(fields:[productId], references:[id], onDelete:Cascade)
+  subscription Subscription @relation(fields:[subscriptionId], references:[id], onDelete:Cascade)
+}
+model CustomizationRequest {
+  id String @id @default(cuid())
+  userId String
+  productId String
+  subscriptionId String?
+  title String
+  description String
+  status RequestStatus @default(SUBMITTED)
+  internalNotes String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+  product Product @relation(fields:[productId], references:[id], onDelete:Cascade)
+  subscription Subscription? @relation(fields:[subscriptionId], references:[id], onDelete:SetNull)
+}
+model SupportTicket {
+  id String @id @default(cuid())
+  userId String
+  productId String?
+  category TicketCategory
+  subject String
+  status TicketStatus @default(OPEN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+  product Product? @relation(fields:[productId], references:[id], onDelete:SetNull)
+  messages SupportMessage[]
+}
+model SupportMessage {
+  id String @id @default(cuid())
+  ticketId String
+  authorId String
+  body String
+  internal Boolean @default(false)
+  createdAt DateTime @default(now())
+  ticket SupportTicket @relation(fields:[ticketId], references:[id], onDelete:Cascade)
+  author User @relation(fields:[authorId], references:[id], onDelete:Restrict)
+}
+model Notification {
+  id String @id @default(cuid())
+  userId String
+  type String
+  title String
+  body String?
+  href String?
+  readAt DateTime?
+  createdAt DateTime @default(now())
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+  @@index([userId,readAt])
+}
+model Lead {
+  id String @id @default(cuid())
+  type LeadType
+  name String
+  businessName String?
+  email String
+  phone String?
+  productSlug String?
+  preferredContact String?
+  message String
+  consent Boolean @default(false)
+  createdAt DateTime @default(now())
+}
+model DemoConfiguration {
+  id String @id @default(cuid())
+  productId String
+  name String
+  url String
+  credentials Json?
+  active Boolean @default(true)
+  displayOrder Int @default(0)
+  product Product @relation(fields:[productId], references:[id], onDelete:Cascade)
+}
+model Testimonial {
+  id String @id @default(cuid())
+  customerName String
+  company String?
+  quote String
+  imageUrl String?
+  locale String @default("en")
+  published Boolean @default(false)
+  sample Boolean @default(false)
+  displayOrder Int @default(0)
+}
+model CaseStudy {
+  id String @id @default(cuid())
+  slug String @unique
+  client String
+  project String
+  challenge String
+  solution String
+  screenshots Json @default("[]")
+  results Json @default("[]")
+  published Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model SiteSetting {
+  id String @id @default(cuid())
+  key String
+  locale String @default("en")
+  value Json
+  updatedAt DateTime @updatedAt
+  @@unique([key,locale])
+}
+model TermsAcceptance {
+  id String @id @default(cuid())
+  userId String
+  document String
+  version String
+  ipAddress String?
+  acceptedAt DateTime @default(now())
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+}
+model AuditLog {
+  id String @id @default(cuid())
+  actorId String?
+  action String
+  targetType String
+  targetId String?
+  metadata Json @default("{}")
+  createdAt DateTime @default(now())
+  actor User? @relation("AuditActor",fields:[actorId],references:[id],onDelete:SetNull)
+  @@index([targetType,targetId])
+}

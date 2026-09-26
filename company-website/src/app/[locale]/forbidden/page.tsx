@@ -1,0 +1,1 @@
+import Link from "next/link";export default function Page(){return <div className="auth-shell"><div className="card auth-card"><div className="eyebrow">403</div><h1>Access denied.</h1><p className="muted">You don’t have permission to access this area.</p><Link className="button" href="/en">Return home</Link></div></div>}

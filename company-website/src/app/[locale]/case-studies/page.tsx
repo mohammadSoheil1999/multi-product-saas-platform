@@ -1,0 +1,1 @@
+export default function Page(){return <section className="page-hero container"><div className="eyebrow">CASE STUDIES</div><h1>Real work. Verified results.</h1><p className="muted">No case studies are published yet. The admin-backed model is ready for genuine client stories.</p></section>}

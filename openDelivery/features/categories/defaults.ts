@@ -1,0 +1,1 @@
+export const DEFAULT_BUSINESS_CATEGORIES=["Restaurant","Pharmacy","Grocery Store","Supermarket","Flower Shop","Bakery","Cake Shop","Electronics Shop","Clothing Shop","Auto Parts Shop","Office","Legal Services","Other"] as const;

@@ -1,0 +1,2 @@
+import {describe,it,expect} from "vitest";import {assertTransition} from "@/features/deliveries/state-machine";
+describe("delivery state machine",()=>{it("allows courier progression",()=>expect(()=>assertTransition("PICKED_UP","IN_TRANSIT","COURIER")).not.toThrow());it("rejects skipped completion",()=>expect(()=>assertTransition("AVAILABLE","COMPLETED","BUSINESS")).toThrow("INVALID_DELIVERY_TRANSITION"));it("rejects business courier actions",()=>expect(()=>assertTransition("AT_PICKUP","PICKED_UP","BUSINESS")).toThrow("FORBIDDEN_TRANSITION"))});

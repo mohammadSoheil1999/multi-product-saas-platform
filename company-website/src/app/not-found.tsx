@@ -1,0 +1,1 @@
+import Link from "next/link";export default function Page(){return <div className="auth-shell"><div className="card auth-card"><div className="eyebrow">404</div><h1>Page not found.</h1><Link className="button" href="/en">Return home</Link></div></div>}

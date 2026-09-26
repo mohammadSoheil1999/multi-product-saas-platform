@@ -1,0 +1,1 @@
+import {LoginForm} from "@/components/LoginForm";export default async function Login({params}:{params:Promise<{locale:string}>}){const {locale}=await params;return <main className="container section"><div className="logo">Open<span>Delivery</span></div><h1>Welcome back</h1><LoginForm locale={locale}/></main>}

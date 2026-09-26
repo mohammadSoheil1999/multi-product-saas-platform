@@ -1,0 +1,1 @@
+import {Suspense} from "react";import {RegistrationForm} from "@/components/RegistrationForm";export default function Register(){return <main className="container section"><div className="logo">Open<span>Delivery</span></div><h1>Create your account</h1><Suspense><RegistrationForm/></Suspense></main>}

@@ -1,0 +1,1 @@
+export default function Page(){return <section className="page-hero container"><div className="eyebrow">LEGAL DRAFT</div><h1>Terms of Service</h1><p className="muted">This placeholder must be reviewed and replaced by qualified counsel before production launch.</p></section>}

@@ -1,0 +1,1 @@
+import {describe,expect,it} from "vitest";import {productSeeds} from "@/config/products";describe("product registry",()=>{it("has unique extensible slugs",()=>expect(new Set(productSeeds.map(p=>p.slug)).size).toBe(productSeeds.length));it("has no hard-coded live demo URL",()=>expect(productSeeds.every(p=>p.demoEnv.startsWith("NEXT_PUBLIC_"))).toBe(true));});

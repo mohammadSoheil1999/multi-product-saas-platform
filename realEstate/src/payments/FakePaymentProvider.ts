@@ -1,0 +1,3 @@
+import type {DemoPaymentData,PaymentProvider,PaymentResult} from './PaymentProvider';
+export class FakePaymentProvider implements PaymentProvider{async processPayment(amount:number,data:DemoPaymentData):Promise<PaymentResult>{await new Promise(r=>setTimeout(r,1100));const digits=data.cardNumber.replace(/\D/g,'');if(!data.cardholder||digits.length!==16||!/^\d{2}\/\d{2}$/.test(data.expiry)||!/^\d{3}$/.test(data.cvv))throw new Error('invalid');const status=digits==='4242424242424242'?'paid':digits==='4000000000000002'?'declined':'failed';return{id:`demo_${Date.now()}`,provider:'fake',status,amount,lastFour:digits.slice(-4),simulation:true,createdAt:new Date().toISOString()}}}
+export const paymentProvider=new FakePaymentProvider();

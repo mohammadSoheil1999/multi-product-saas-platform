@@ -1,0 +1,10 @@
+.footer {
+  width: 100%;
+  margin-top: auto;
+  padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+  color: var(--ink-soft);
+  background: transparent;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  text-align: center;
+}

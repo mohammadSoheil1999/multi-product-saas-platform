@@ -1,0 +1,4 @@
+import { productSeeds, demoUrl } from "@/config/products";
+import { DemoLaunch, ProductVisual } from "@/components/site";
+export const metadata={title:"Interactive Product Demos",description:"Try our ready-made business platforms before you subscribe."};
+export default function Demos(){return <><section className="page-hero container"><div className="eyebrow">DEMO CENTER</div><h1 className="display">Try Before You Buy.</h1><p className="muted">Experience the customer flows, dashboards, and management tools in safe demonstration environments.</p></section><section className="section"><div className="container grid grid-2">{productSeeds.map(p=><article className="card" style={{padding:28}} key={p.slug}><ProductVisual kind={p.slug}/><h2>{p.name}</h2><p className="muted">{p.description}</p><DemoLaunch url={demoUrl(p.slug)} name={p.name}/></article>)}</div></section></>}

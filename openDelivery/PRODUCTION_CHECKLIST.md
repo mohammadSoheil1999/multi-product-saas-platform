@@ -1,0 +1,24 @@
+# OpenDelivery production checklist
+
+- [ ] Production PostgreSQL configured
+- [ ] Daily backups and retention enabled
+- [ ] HTTPS enabled at proxy/platform
+- [ ] Strong production `AUTH_SECRET` generated
+- [ ] Development seed disabled and demo accounts absent
+- [ ] Real email provider configured
+- [ ] S3-compatible object storage configured
+- [ ] Realtime provider configured and failure-tested
+- [ ] Redis rate limiting configured
+- [ ] Error monitoring configured
+- [ ] Legal documents reviewed by qualified local counsel
+- [ ] Privacy settings and retention reviewed
+- [ ] Terms/privacy versions configured
+- [ ] Admin account secured with unique credentials
+- [ ] Test admin passwords removed
+- [ ] `prisma migrate deploy` completed
+- [ ] `/api/health` verified from platform monitoring
+- [ ] Mobile and accessibility testing completed
+- [ ] Arabic and Hebrew RTL testing completed
+- [ ] Tenant isolation integration tests passed
+- [ ] Backup restore tested
+- [ ] Security review and abuse-response runbook completed

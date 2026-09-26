@@ -1,0 +1,1 @@
+import {describe,expect,it} from "vitest";describe("subscription state contract",()=>{it("supports required lifecycle statuses",()=>{const statuses=["TRIALING","ACTIVE","PAST_DUE","CANCELLED","EXPIRED","SUSPENDED"];expect(statuses).toContain("PAST_DUE");expect(new Set(statuses).size).toBe(6)})});

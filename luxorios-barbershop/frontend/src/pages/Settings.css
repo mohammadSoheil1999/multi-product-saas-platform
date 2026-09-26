@@ -1,0 +1,22 @@
+.settings-card { max-width: 780px; }
+.settings-section { padding: 18px; background: rgba(255,255,255,.65); border: 1px solid var(--line); border-radius: 16px; }
+.settings-field { display: grid; gap: 9px; color: var(--ink); font-weight: 700; }
+.color-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.color-field { display: grid; gap: 9px; color: var(--ink); font-size: .9rem; font-weight: 700; }
+.color-control { min-height: 52px; padding: 7px 10px; display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--line); border-radius: 12px; }
+.color-control input { width: 38px; height: 34px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.color-control code { color: var(--ink-soft); direction: ltr; }
+.settings-label { display: block; margin-bottom: 12px; font-weight: 700; }
+.background-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.background-option { padding: 8px; display: grid; gap: 7px; color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 12px; cursor: pointer; }
+.background-option.active { border-color: var(--brand-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-accent) 20%, transparent); }
+.background-swatch { height: 48px; border-radius: 8px; }
+.bg-sand .background-swatch { background: linear-gradient(145deg,#f7f3ec,#edf2ed); }
+.bg-sage .background-swatch { background: linear-gradient(145deg,#dfe8df,#b9cbbb); }
+.bg-charcoal .background-swatch { background: linear-gradient(145deg,#303733,#131815); }
+.bg-classic .background-swatch { background: linear-gradient(145deg,#e7d7bd,#7f6345); }
+.settings-message { margin: 0; color: var(--success); text-align: center; font-weight: 700; }
+.settings-save { width: 100%; }
+.settings-actions { display: grid; grid-template-columns: minmax(0, .75fr) minmax(0, 1.25fr); gap: 10px; }
+@media (max-width: 640px) { .color-grid { grid-template-columns: 1fr; } .background-options { grid-template-columns: repeat(2,1fr); } .settings-section { padding: 14px; } }
+@media (max-width: 440px) { .settings-actions { grid-template-columns: 1fr; } }

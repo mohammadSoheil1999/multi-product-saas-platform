@@ -1,0 +1,3 @@
+import {z} from "zod";import {requireAdmin} from "@/features/auth/authorization";import {db} from "@/lib/db";import {failure,ok} from "@/lib/http";
+const schema=z.object({name:z.string().trim().min(2).max(80)});
+export async function POST(req:Request){try{const a=await requireAdmin();const input=schema.parse(await req.json());const category=await db.$transaction(async tx=>{const c=await tx.category.upsert({where:{tenantId_name:{tenantId:a.tenantId,name:input.name}},create:{tenantId:a.tenantId,name:input.name},update:{active:true}});await tx.auditLog.create({data:{tenantId:a.tenantId,adminUserId:a.id,action:"CATEGORY_CREATED_OR_RESTORED",targetType:"Category",targetId:c.id,metadata:{name:c.name}}});return c});return ok(category,201)}catch(e){return failure(e)}}

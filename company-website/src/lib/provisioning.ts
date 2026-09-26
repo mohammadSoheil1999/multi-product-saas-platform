@@ -1,0 +1,16 @@
+import crypto from "node:crypto";
+import { db } from "./db";
+
+export type ProvisioningAction="provision"|"suspend"|"reactivate";
+export type ProvisioningResult={externalTenantId:string;accessUrl:string;status:"PROVISIONING"|"ACTIVE"};
+export interface ProvisioningProvider{provision(id:string):Promise<ProvisioningResult>;suspend(id:string):Promise<ProvisioningResult>;reactivate(id:string):Promise<ProvisioningResult>}
+
+function configFor(slug:string){const key=slug.replaceAll("-","_").toUpperCase();const url=process.env[`PROVISIONING_${key}_URL`];const secret=process.env[`PROVISIONING_${key}_SECRET`];if(!url||!secret)throw new Error(`Provisioning is not configured for ${slug}`);if(secret.length<32)throw new Error(`Provisioning secret for ${slug} must be at least 32 characters`);return{url,secret}}
+
+export function createProductHandoff(slug:string,payload:{tenantId:string;userId:string;email:string}){const{secret}=configFor(slug);const body=Buffer.from(JSON.stringify({...payload,expiresAt:Date.now()+5*60_000})).toString("base64url");const signature=crypto.createHmac("sha256",secret).update(body).digest("base64url");return`${body}.${signature}`}
+
+export class HttpProvisioningProvider implements ProvisioningProvider{
+ private async send(subscriptionId:string,action:ProvisioningAction){const subscription=await db.subscription.findUniqueOrThrow({where:{id:subscriptionId},include:{user:{include:{businessProfile:true}},product:true,plan:true}});if(subscription.status!=="ACTIVE"&&action==="provision")throw new Error("Only active subscriptions can be provisioned");if(subscription.product.slug==="opendelivery")throw new Error("OpenDelivery is not a licensable company product");const config=configFor(subscription.product.slug);const payload={eventId:`${action}:${subscription.id}`,action,subscriptionId:subscription.id,productSlug:subscription.product.slug,customer:{id:subscription.user.id,name:subscription.user.name,email:subscription.user.email,language:subscription.user.preferredLanguage},business:{name:subscription.user.businessProfile?.businessName??subscription.user.name,phone:subscription.user.businessProfile?.phone??null,country:subscription.user.businessProfile?.country??null},plan:{id:subscription.plan.id,slug:subscription.plan.slug,name:subscription.plan.name,features:subscription.plan.features,limits:subscription.plan.limits,maxUsers:subscription.plan.maxUsers,maxLocations:subscription.plan.maxLocations}};const body=JSON.stringify(payload);const timestamp=Date.now().toString();const signature=crypto.createHmac("sha256",config.secret).update(`${timestamp}.${body}`).digest("hex");const response=await fetch(config.url,{method:"POST",headers:{"content-type":"application/json","x-provisioning-timestamp":timestamp,"x-provisioning-signature":signature},body,signal:AbortSignal.timeout(10_000)});if(!response.ok)throw new Error(`Product provisioning failed (${response.status})`);const result=await response.json() as ProvisioningResult;if(!result.externalTenantId||!result.accessUrl)throw new Error("Product returned an invalid provisioning response");return result}
+ provision(id:string){return this.send(id,"provision")} suspend(id:string){return this.send(id,"suspend")} reactivate(id:string){return this.send(id,"reactivate")}
+}
+export const provisioningProvider=new HttpProvisioningProvider();

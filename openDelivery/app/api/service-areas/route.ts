@@ -1,0 +1,2 @@
+import {db} from "@/lib/db";import {env} from "@/lib/env";import {failure,ok} from "@/lib/http";
+export async function GET(){try{const tenant=await db.tenant.findFirstOrThrow({where:{slug:env.DEFAULT_TENANT_SLUG,status:"ACTIVE"}});return ok(await db.serviceArea.findMany({where:{tenantId:tenant.id,active:true},select:{id:true,name:true,city:true},orderBy:[{city:"asc"},{name:"asc"}]}))}catch(e){return failure(e)}}

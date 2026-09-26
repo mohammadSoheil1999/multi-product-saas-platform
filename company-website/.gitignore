@@ -1,0 +1,8 @@
+node_modules
+.next
+.env
+generated
+playwright-report
+test-results
+coverage
+/.pglite/

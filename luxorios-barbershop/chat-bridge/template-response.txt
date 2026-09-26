@@ -1,0 +1,7 @@
+[ID: 001]
+COMMAND: help
+STATUS: done
+RESULT:
+Waiting for command...
+
+TIME: not yet processed

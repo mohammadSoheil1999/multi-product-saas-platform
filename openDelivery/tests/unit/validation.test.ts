@@ -1,0 +1,1 @@
+import {describe,it,expect} from "vitest";import {moneySchema} from "@/features/deliveries/schemas";describe("money",()=>{it("requires integer minor units",()=>{expect(moneySchema.safeParse(3500).success).toBe(true);expect(moneySchema.safeParse(35.5).success).toBe(false)})});

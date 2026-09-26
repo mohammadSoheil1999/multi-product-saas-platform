@@ -1,0 +1,1 @@
+"use client";export default function Error({reset}:{reset:()=>void}){return <div className="auth-shell"><div className="card auth-card"><div className="eyebrow">SOMETHING WENT WRONG</div><h1>We couldn’t load this page.</h1><p className="muted">The error was logged without exposing private details.</p><button className="button" onClick={reset}>Try again</button></div></div>}

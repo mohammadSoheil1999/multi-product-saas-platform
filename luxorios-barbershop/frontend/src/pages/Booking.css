@@ -1,0 +1,18 @@
+.booking-card {
+  width: min(100%, 600px);
+  padding: clamp(22px, 4vw, 40px);
+  background: var(--surface);
+  border: 1px solid #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.booking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.booking-button {
+  width: 100%;
+}

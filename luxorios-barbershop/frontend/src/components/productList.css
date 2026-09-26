@@ -1,0 +1,51 @@
+/* Ensure the products container is responsive */
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Use a responsive grid */
+    gap: 1rem;
+    padding: 1rem;
+    justify-items: center; /* Center the items */
+  }
+  
+  .product-card {
+    background-color: #ffffff; /* White background for the card */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 100%;
+    max-width: 300px; /* Ensure it doesn't get too wide */
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  
+  /* Add hover effect (optional, you can remove it if not needed) */
+  .product-card:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Style the product image */
+  .product-card img {
+    width: 100px;
+    object-fit: cover; /* This will make the image fill the space proportionally */
+    border-bottom: 2px solid #eee; /* Add a small border below the image */
+  }
+  
+  /* Style the product details */
+  .product-card h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 1rem;
+  }
+  
+  .product-card p {
+    font-size: 1rem;
+    color: #666;
+    margin-top: 0.5rem;
+  }
+  
+  .product-card .price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ff9900; /* Gold color for price */
+    margin-top: 1rem;
+  }

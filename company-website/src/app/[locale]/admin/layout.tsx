@@ -1,0 +1,1 @@
+import { DashboardShell } from "@/components/dashboard";import { localeOf } from "@/lib/i18n";import { requireAdmin } from "@/lib/authorization";export default async function Layout({children,params}:{children:React.ReactNode;params:Promise<{locale:string}>}){await requireAdmin();return <DashboardShell admin locale={localeOf((await params).locale)}>{children}</DashboardShell>}

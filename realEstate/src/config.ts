@@ -1,0 +1,2 @@
+export const brand={name:'KeyHaven',tagline:'Exceptional places, thoughtfully found.',phone:'+972 3 555 0148',email:'hello@keyhaven.local',whatsapp:'+97235550148',currency:'USD',languages:['en','ar','he'] as const,colors:{primary:'#153f3a',accent:'#d99f64'}};
+export const demoAccounts={admin:{email:'admin@realestate-demo.local',password:'Demo123!'},agent:{email:'agent@realestate-demo.local',password:'Demo123!'},customer:{email:'customer@realestate-demo.local',password:'Demo123!'}};

@@ -1,0 +1,2 @@
+import {z} from "zod";import {requireCourier} from "@/features/auth/authorization";import {db} from "@/lib/db";import {failure,ok} from "@/lib/http";
+export async function POST(req:Request){try{const actor=await requireCourier();const availability=z.object({availability:z.enum(["AVAILABLE","OFFLINE"])}).parse(await req.json());return ok(await db.courierProfile.update({where:{userId:actor.id},data:availability,select:{availability:true}}))}catch(e){return failure(e)}}

@@ -1,0 +1,4 @@
+export const demoMode=import.meta.env.VITE_APP_MODE!=="production";
+const handoff=new URLSearchParams(location.search).get("handoff")||"",base=import.meta.env.VITE_API_URL||"http://localhost:5185/api";
+let ready:Promise<void>|undefined;function ensureSession(){if(demoMode)return Promise.resolve();if(!ready)ready=handoff?fetch(`${base}/platform/session`,{method:"POST",credentials:"include",headers:{"content-type":"application/json"},body:JSON.stringify({handoff})}).then(r=>{if(!r.ok)throw new Error("Product sign-in failed");history.replaceState({},"",location.pathname)}):Promise.resolve();return ready}
+export async function createLead(input:Record<string,unknown>){if(demoMode)return;await ensureSession();const response=await fetch(`${base}/leads`,{method:"POST",credentials:"include",headers:{"content-type":"application/json"},body:JSON.stringify(input)});if(!response.ok)throw new Error(`Unable to save lead (${response.status})`);return response.json()}

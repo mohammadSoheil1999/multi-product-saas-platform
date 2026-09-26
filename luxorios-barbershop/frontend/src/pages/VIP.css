@@ -1,0 +1,365 @@
+.vip-card {
+  width: min(100%, 900px);
+  padding: clamp(22px, 4vw, 42px);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 18px;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--cream) 94%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(16px);
+}
+
+.vip-card::before {
+  content: "";
+  width: 52px;
+  height: 3px;
+  margin: -10px auto 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #8c7045, #dbc18c, #8c7045);
+}
+
+.main-content .vip-card {
+  width: min(100%, 430px);
+}
+
+.vip-card > .main-container {
+  width: 100%;
+  min-height: auto;
+  padding: 0;
+  gap: 14px;
+}
+
+.vip-title,
+.booking-title {
+  width: 100%;
+  margin: 0 0 6px;
+  padding: 0;
+  color: var(--forest-dark);
+  background: none;
+  box-shadow: none;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.85rem, 5vw, 2.65rem);
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.vip-subtitle {
+  max-width: 680px;
+  margin: 0 auto;
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.vip-button,
+.product-button,
+.booking-button {
+  min-height: 48px;
+  padding: 11px 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  background: var(--forest);
+  box-shadow: 0 5px 14px rgba(63, 91, 76, 0.17);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.vip-button:hover,
+.product-button:hover,
+.booking-button:hover {
+  color: #fff;
+  background: var(--forest-dark);
+  box-shadow: 0 7px 18px rgba(63, 91, 76, 0.22);
+  transform: translateY(-1px);
+}
+
+.vip-button:focus-visible,
+.product-button:focus-visible,
+.booking-button:focus-visible {
+  outline: 3px solid rgba(142, 163, 149, 0.45);
+  outline-offset: 2px;
+}
+
+.vip-button:active,
+.product-button:active,
+.booking-button:active {
+  transform: translateY(0);
+}
+
+.vip-button.selected,
+.product-button.selected {
+  color: #fff;
+  background: var(--success);
+  border-color: var(--success) !important;
+  box-shadow: 0 0 0 3px rgba(82, 124, 99, 0.18);
+}
+
+.appointments-card {
+  min-height: 420px;
+}
+
+.section-heading {
+  margin-bottom: 2px;
+  text-align: center;
+}
+
+.section-heading .section-eyebrow {
+  display: block;
+  margin: 0 0 10px;
+  color: var(--brand-accent);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.8rem, 5vw, 2.55rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.section-heading p {
+  max-width: 540px;
+  margin: 0 auto;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+
+.primary-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.button-secondary {
+  color: var(--forest) !important;
+  background: #edf2ee !important;
+  border-color: #d5dfd7 !important;
+  box-shadow: none !important;
+}
+
+.table-wrapper {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 8px 24px rgba(45, 61, 52, 0.06);
+}
+
+.custom-table thead th {
+  height: 50px;
+  letter-spacing: 0.01em;
+}
+
+.bulk-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 2px;
+}
+
+.action-success {
+  background: var(--success) !important;
+}
+
+.action-danger {
+  background: var(--danger) !important;
+}
+
+.days-row,
+.slots-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.days-row .vip-button,
+.slots-grid .vip-button {
+  min-width: 0;
+  padding-inline: 8px;
+  color: var(--ink);
+  background: #f7f9f7;
+  border-color: var(--line);
+  box-shadow: none;
+  font-weight: 700;
+}
+
+.days-row .vip-button:hover,
+.slots-grid .vip-button:hover {
+  color: var(--forest-dark);
+  background: var(--sage-soft);
+}
+
+.days-row .vip-button.selected,
+.slots-grid .vip-button.selected {
+  color: #fff;
+  background: var(--success);
+}
+
+.slots-grid {
+  max-height: 220px;
+  padding: 3px 4px 3px 0;
+  overflow-y: auto;
+  scrollbar-color: var(--sage) transparent;
+  scrollbar-width: thin;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  scrollbar-color: var(--sage) transparent;
+  scrollbar-width: thin;
+}
+
+.custom-table {
+  width: 100%;
+  min-width: 460px;
+  border-spacing: 0;
+  border-collapse: separate;
+  color: var(--ink);
+  font-size: 0.98rem;
+  text-align: center;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 14px 12px;
+  background: #fff;
+  border: 0;
+  border-bottom: 1px solid #edf0ed;
+}
+
+.custom-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  color: var(--forest-dark);
+  background: #eef3ef;
+  font-weight: 700;
+}
+
+.custom-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.table-row:hover td {
+  background: #f7f9f7;
+}
+
+.custom-table td .vip-button {
+  min-height: 38px;
+  padding: 8px 12px;
+  font-size: 0.88rem;
+}
+
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 42, 36, 0.55);
+  backdrop-filter: blur(5px);
+}
+
+.popup-card {
+  width: min(100%, 470px);
+  max-height: min(88dvh, 720px);
+  padding: clamp(22px, 5vw, 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  color: var(--ink);
+  background: var(--cream);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 24px;
+  box-shadow: 0 24px 70px rgba(25, 38, 31, 0.3);
+  text-align: center;
+}
+
+.popup-card h3 {
+  margin: 0;
+  color: var(--forest-dark) !important;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.65rem;
+}
+
+.popup-card p {
+  margin: 0;
+  color: var(--ink-soft) !important;
+  line-height: 1.6;
+}
+
+.popup-card .vip-button[style*="red"],
+.popup-card .vip-button[style*="#ef4444"] {
+  background: var(--danger) !important;
+}
+
+@media (max-width: 640px) {
+  .vip-card {
+    padding: 22px 16px;
+    border-radius: 22px;
+    gap: 14px;
+  }
+
+  .appointments-card {
+    min-height: calc(100dvh - 150px);
+  }
+
+  .primary-actions > * {
+    flex: 1 1 100%;
+  }
+
+  .custom-table {
+    min-width: 100%;
+    font-size: 0.9rem;
+  }
+
+  .custom-table th,
+  .custom-table td {
+    padding: 12px 7px;
+  }
+
+  .custom-table td .vip-button {
+    min-height: 36px;
+    padding: 7px;
+    font-size: 0.78rem;
+  }
+
+  .popup-overlay {
+    padding: 10px;
+    align-items: center;
+  }
+
+  .popup-card {
+    width: min(100%, 430px);
+    max-height: calc(100dvh - 32px);
+    padding: 24px 16px;
+    border-radius: 22px;
+  }
+}
+
+@media (max-width: 380px) {
+  .days-row,
+  .slots-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

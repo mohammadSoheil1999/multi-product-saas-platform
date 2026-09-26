@@ -1,0 +1,2 @@
+import {requireBusiness} from "@/features/auth/authorization";import {selectOffer} from "@/server/services/delivery-service";import {failure,ok} from "@/lib/http";import {idSchema} from "@/features/deliveries/schemas";
+export async function POST(_:Request,{params}:{params:Promise<{id:string}>}){try{const actor=await requireBusiness();const {id}=await params;return ok(await selectOffer(actor,idSchema.parse(id)));}catch(e){return failure(e)}}

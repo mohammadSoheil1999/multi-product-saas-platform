@@ -1,0 +1,2 @@
+import {requireUser} from "@/features/auth/authorization";import {updateDeliveryStatus} from "@/server/services/delivery-service";import {failure,ok} from "@/lib/http";import {idSchema,statusSchema} from "@/features/deliveries/schemas";
+export async function POST(req:Request,{params}:{params:Promise<{id:string}>}){try{const actor=await requireUser();const {id}=await params;const body=statusSchema.parse(await req.json());return ok(await updateDeliveryStatus(actor,idSchema.parse(id),body.status,body.reason));}catch(e){return failure(e)}}

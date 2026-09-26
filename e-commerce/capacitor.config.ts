@@ -1,0 +1,3 @@
+import type { CapacitorConfig } from '@capacitor/cli';
+const config: CapacitorConfig = {appId:'com.novamarket.shop',appName:'Nova Market',webDir:'dist',backgroundColor:'#f6f3ed',android:{backgroundColor:'#f6f3ed',allowMixedContent:false,captureInput:true},ios:{backgroundColor:'#f6f3ed',contentInset:'automatic',preferredContentMode:'mobile'},plugins:{SplashScreen:{launchShowDuration:1200,launchAutoHide:true,backgroundColor:'#173f35',androidScaleType:'CENTER_CROP',showSpinner:false},StatusBar:{style:'DARK',backgroundColor:'#173f35',overlaysWebView:false},LocalNotifications:{smallIcon:'ic_stat_nova',iconColor:'#173f35'},PushNotifications:{presentationOptions:['badge','sound','alert']}}};
+export default config;
